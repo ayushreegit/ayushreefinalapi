@@ -109,42 +109,42 @@ app.post('/logout', async (req, res) => {
 });
 
 // File Upload API
-app.post('/upload/:userId', upload.array('files'), async (req, res) => {
-    const { files } = req;
-    const { userId } = req.params;
-  
-    try {
-      // Upload files to Cloudinary
-      const uploadPromises = files.map(file => cloudinary.uploader.upload(file.path));
-      const results = await Promise.all(uploadPromises);
-  
-      // Save the uploaded files information to the user's files array in the database
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      const uploadedFiles = results.map(result => ({
-        filename: result.original_filename,
-        cloudinaryId: result.public_id,
-        url: result.secure_url
-      }));
-  
-      user.files.push(...uploadedFiles);
-  
-      await user.save();
-  
-      // Remove the temporary files
-      files.forEach(file => fs.unlinkSync(file.path));
-  
-      res.status(201).json({
-        message: 'Files uploaded successfully',
-        files: uploadedFiles
-      });
-    } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error' });
+app.post('/upload/:userId', upload.any(), async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Upload files to Cloudinary
+    const uploadPromises = req.files.map(file => cloudinary.uploader.upload(file.path));
+    const results = await Promise.all(uploadPromises);
+
+    // Save the uploaded files information to the user's files array in the database
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  });
+
+    const uploadedFiles = results.map(result => ({
+      filename: result.original_filename,
+      cloudinaryId: result.public_id,
+      url: result.secure_url
+    }));
+
+    user.files.push(...uploadedFiles);
+
+    await user.save();
+
+    // Remove the uploaded files
+    req.files.forEach(file => fs.unlinkSync(file.path));
+
+    res.status(201).json({
+      message: 'Files uploaded successfully',
+      files: uploadedFiles
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
   
 
 app.get("/users",async(req,res)=>{
