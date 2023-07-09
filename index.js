@@ -95,7 +95,7 @@ app.post('/login', async (req, res) => {
 
     // Set user session or generate JWT token for authentication
 
-    res.status(200).json({ message: `${user.name} logged in successfully` });
+    res.status(200).json({ message: `${user.name} logged in successfully`,success:true,user });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
