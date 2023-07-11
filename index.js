@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://demo_user:Maaaa86@@cluster0.lotag7j.mongodb.net/?retryWrites=true', {
+mongoose.connect('mongodb+srv://demo_user:yJHx6xH8BBPzSe5D@cluster0.lotag7j.mongodb.net/?retryWrites=true', {
 
   
 dbName:"Ayshree",
