@@ -9,7 +9,9 @@ const app = express();
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://ashokgehlot:33cMmsiAW4A5vYYZ@cluster1.riwdhug.mongodb.net/?retryWrites=true', {
+mongoose.connect('mongodb+srv://demo_user:Maaaa86@@cluster0.lotag7j.mongodb.net/?retryWrites=true', {
+
+  
 dbName:"Ayshree",
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -50,12 +52,11 @@ const storage = multer.diskStorage({
 const upload = multer({ dest: 'uploads/' });
 
 // Configure Cloudinary
-cloudinary.config({
-  cloud_name: 'dxuaxmayo',
-  api_key: '955981974535128',
-  api_secret: 'TPrOqCY-6C_KmQplW_0NrnhYJ1A'
+cloudinary.config({ 
+  cloud_name: 'dobcsf72y', 
+  api_key: '489658586897445', 
+  api_secret: 'bivuZUbd6owLJyXI3wP4J6CZjKs' 
 });
-
 // User Registration API
 app.post('/register', async (req, res) => {
   const { name, email, password ,usertype} = req.body;
